@@ -1,0 +1,12 @@
+const assert = require('assert');
+const {predict,modelInfo}=require('./ml_model');
+const model=modelInfo();
+assert(model.available,'ML model artifact should be available');
+assert(model.algorithm.includes('logistic'),'Expected logistic regression model');
+assert(model.features.length>=6,'Expected lifecycle feature set');
+const low=predict({failures:0,complaints:0,repairs:0,violations:0,days_to_expiry:300,scans:1,open_fraud:0,age_years:1,location_anomalies:0});
+const high=predict({failures:3,complaints:2,repairs:2,violations:2,days_to_expiry:-30,scans:8,open_fraud:2,age_years:10,location_anomalies:2});
+assert(low.available && high.available,'Predictions should be available');
+assert(high.score>low.score,'Higher lifecycle-risk features should increase ML risk');
+assert(high.factors.length===model.features.length,'Every model feature should be explainable');
+console.log(`ML MODEL PASS: ${model.version} · ${model.trainingRows} training rows · low=${low.score} high=${high.score}`);

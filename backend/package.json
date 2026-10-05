@@ -1,0 +1,17 @@
+{
+  "name": "veriq-backend",
+  "version": "4.0.0",
+  "private": true,
+  "description": "Veriq Legal Metrology API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check ml_model.js && node --check ml-test.js && node --check full-system-test.js && node --check static-test.js",
+    "test": "node ml-test.js && node full-system-test.js && node static-test.js",
+    "train:risk": "python ../ml/train_model.py",
+    "qa": "node qa-preflight.js"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
